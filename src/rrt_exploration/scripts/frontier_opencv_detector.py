@@ -53,7 +53,7 @@ def node():
 		points.color.g = 0.0/255.0
 		points.color.b = 0.0/255.0
 		points.color.a=1;
-		points.lifetime == rospy.Duration();
+		points.lifetime = rospy.Duration();
 
 #-------------------------------OpenCV frontier detection------------------------------------------
 		while not rospy.is_shutdown():

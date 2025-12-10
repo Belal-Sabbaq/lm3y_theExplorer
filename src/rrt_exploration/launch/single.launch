@@ -1,46 +1,79 @@
-<!-- Launch file for the rrt-detector and the assigner -->
-
-
+<?xml version="1.0"?>
 <launch>
-<arg name="eta" value="1.0"/>
-<arg name="Geta" value="15.0"/>
-<param name="namespace_init_count" value="1"/>
 
 
-  <node pkg="rrt_exploration" type="global_rrt_detector" name="global_detector" output="screen">
-  <param name="eta" value="$(arg Geta)"/>
-  <param name="map_topic" value="/robot_1/map"/>
-  </node>
   
-  <node pkg="rrt_exploration" type="local_rrt_detector" name="local_detector" output="screen">
-  <param name="eta" value="$(arg eta)"/>
-  <param name="map_topic" value="/robot_1/map"/>
-  <param name="robot_frame" value="/robot_1/base_link"/>
+      
+  <!-- Robot namespace (must match your robot & move_base) -->
+  <arg name="robot_namespace" default="robot_1"/>
+
+  <!-- RRT parameters -->
+  <arg name="eta"  default="1.0"/>
+  <arg name="Geta" default="15.0"/>
+
+  <!-- For multi-robot setups later: start from robot_1 -->
+  <param name="namespace_init_count" value="1"/>
+
+  <!-- =============== GLOBAL RRT DETECTOR =============== -->
+  <node pkg="rrt_exploration"
+        type="global_rrt_detector"
+        name="global_detector"
+        output="screen">
+    <param name="eta" value="$(arg Geta)"/>
+    <!-- Gmapping map topic of this robot -->
+    <param name="map_topic" value="/$(arg robot_namespace)/map"/>
   </node>
- 
-  
-  <node pkg="rrt_exploration" type="filter.py" name="filter" output="screen">
-  <param name="map_topic" value="/robot_1/map"/>
-  <param name="info_radius" value="1"/> 
-  <param name="costmap_clearing_threshold" value="70"/> 
-  <param name="goals_topic" value="/detected_points"/>
-  <param name="namespace" value="/robot_"/> 
-  <param name="n_robots" value="1"/>
-  <param name="rate" value="100"/>
+
+  <!-- =============== LOCAL RRT DETECTOR =============== -->
+  <node pkg="rrt_exploration"
+        type="local_rrt_detector"
+        name="local_detector"
+        output="screen">
+    <param name="eta" value="$(arg eta)"/>
+    <param name="map_topic" value="/$(arg robot_namespace)/map"/>
+    <!-- <param name="robot_frame" value="/$(arg robot_namespace)/base_link"/> -->
+    <param name="robot_frame" value="/base_link"/>
   </node>
-  
-  <node pkg="rrt_exploration" type="assigner.py" name="assigner" output="screen">
-  <param name="map_topic" value="/robot_1/map"/>
-  <param name="global_frame" value="/robot_1/map"/>
-  <param name="info_radius" value="1"/> 
-  <param name="info_multiplier" value="3.0"/> 
-  <param name="hysteresis_radius" value="3.0"/> 
-  <param name="hysteresis_gain" value="2.0"/> 
-  <param name="frontiers_topic" value="/filtered_points"/> 
-  <param name="n_robots" value="1"/>
-  <param name="namespace" value="/robot_"/>
-  <param name="delay_after_assignement" value="0.5"/>
-  <param name="rate" value="100"/>
+
+  <!-- =============== FILTER NODE =============== -->
+  <node pkg="rrt_exploration"
+        type="filter.py"
+        name="filter"
+        output="screen">
+    <param name="map_topic" value="/$(arg robot_namespace)/map"/>
+    <param name="info_radius" value="1"/>
+    <param name="costmap_clearing_threshold" value="70"/>
+    <!-- Takes detection points from the detectors -->
+    <param name="goals_topic" value="/detected_points"/>
+    <!-- Prefix for robot namespaces: /robot_1, /robot_2, ... -->
+    <param name="namespace" value="/robot_"/>
+    <param name="n_robots" value="1"/>
+    <param name="rate" value="100"/>
   </node>
-  
+
+  <!-- =============== ASSIGNER NODE =============== -->
+  <node pkg="rrt_exploration"
+        type="assigner.py"
+        name="assigner"
+        output="screen">
+    <param name="map_topic" value="/$(arg robot_namespace)/map"/>
+    <param name="global_frame" value="map"/>
+    <param name="robot_frame" value="base_link"/>
+
+    <param name="info_radius" value="1"/>
+    <param name="info_multiplier" value="3.0"/>
+    <param name="hysteresis_radius" value="3.0"/>
+    <param name="hysteresis_gain" value="2.0"/>
+
+    <!-- Takes filtered frontiers from filter.py -->
+    <param name="frontiers_topic" value="/filtered_points"/>
+
+    <!-- Multi-robot config -->
+    <param name="n_robots" value="1"/>
+    <param name="namespace" value="robot_"/>
+
+    <param name="delay_after_assignement" value="0.5"/>
+    <param name="rate" value="100"/>
+  </node>
+
 </launch>

@@ -1,0 +1,16 @@
+global_costmap:
+  global_frame: map
+  robot_base_frame: base_link   # change if your base is named differently
+  update_frequency: 5.0
+  publish_frequency: 1.0
+  transform_tolerance: 0.5
+
+  static_map: true        # use map from gmapping
+  rolling_window: true
+  width: 100.0
+  height: 100.0
+  resolution: 0.05
+  plugins:
+    - {name: static_layer,   type: "costmap_2d::StaticLayer"}
+    - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
+    - {name: inflation_layer,type: "costmap_2d::InflationLayer"}

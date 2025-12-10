@@ -1,0 +1,15 @@
+digraph G {
+"base_footprint" -> "base_link"[label="Broadcaster: /robot_1/robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 228.849 sec old)\nBuffer length: 0.000 sec\n"];
+"odom" -> "base_footprint"[label="Broadcaster: /gazebo\nAverage rate: 99.792 Hz\nMost recent transform: 228.846 ( 0.003 sec old)\nBuffer length: 4.800 sec\n"];
+"base_link" -> "depth_camera_link"[label="Broadcaster: /robot_1/robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 228.849 sec old)\nBuffer length: 0.000 sec\n"];
+"depth_camera_link" -> "depth_link"[label="Broadcaster: /robot_1/robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 228.849 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "imu_link"[label="Broadcaster: /robot_1/robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 228.849 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "inertial_link"[label="Broadcaster: /robot_1/robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 228.849 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "laser_link"[label="Broadcaster: /robot_1/robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 228.849 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "robot_1/base_link"[label="Broadcaster: /robot1_tf\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 228.849 sec old)\nBuffer length: 0.000 sec\n"];
+"map" -> "odom"[label="Broadcaster: /robot_1/gmapping\nAverage rate: 20.208 Hz\nMost recent transform: 228.897 ( -0.048 sec old)\nBuffer length: 4.800 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 228.849"[ shape=plaintext ] ;
+ }->"map";
+}
