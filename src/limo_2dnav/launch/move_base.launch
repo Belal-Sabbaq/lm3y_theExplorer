@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Namespace of the robot (must match the robot launch) -->
+  <arg name="robot_namespace" default="robot_1"/>
+
+  <!-- Use simulation time from Gazebo -->
+  <param name="use_sim_time" value="true" />
+
+  <!-- Everything here will live under /robot_namespace -->
+  <group ns="$(arg robot_namespace)">
+
+    <!-- Start move_base -->
+    <node pkg="move_base"
+          type="move_base"
+          name="move_base_node"
+          output="screen">
+
+      <!-- Choose global and local planners -->
+      <param name="base_global_planner" value="navfn/NavfnROS" />
+      <param name="base_local_planner"  value="dwa_local_planner/DWAPlannerROS" />
+
+      <!-- Costmap parameters (loaded into move_base's private namespace) -->
+      <rosparam file="$(find limo_2dnav)/config/costmap_common_params.yaml" command="load" />
+      <rosparam file="$(find limo_2dnav)/config/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find limo_2dnav)/config/local_costmap_params.yaml" command="load" />
+
+      <!-- Local planner parameters -->
+      <rosparam file="$(find limo_2dnav)/config/base_local_planner_params.yaml" command="load" />
+      <remap from="cmd_vel" to="/cmd_vel" />
+      <!--
+      If needed later, you can add remaps here, e.g.:
+      <remap from="cmd_vel" to="cmd_vel"/>   becomes /robot_1/cmd_vel -->
+      
+
+    </node>
+
+  </group>
+</launch>

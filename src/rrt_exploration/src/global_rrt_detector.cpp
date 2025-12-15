@@ -131,6 +131,11 @@ geometry_msgs::Point p;
 
 while(points.points.size()<5)
 {
+
+	ROS_WARN_THROTTLE(2.0,
+        "Waiting for RViz points: %lu / 5 received. Click more points using 'Publish Point' tool.",
+        points.points.size()
+    );
 ros::spinOnce();
 
 pub.publish(points) ;
