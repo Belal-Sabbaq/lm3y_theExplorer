@@ -3,7 +3,7 @@ map_type: costmap
 
 # Either footprint OR robot_radius – pick ONE.
 # For a small LIMO-like robot, radius ~0.25 m is common, tune if needed.
-transform_tolerance: 2.0
+transform_tolerance: 0.5
 
 robot_radius: 0.45
 # footprint: [[0.20, 0.15], [0.20, -0.15], [-0.20, -0.15], [-0.20, 0.15]]
