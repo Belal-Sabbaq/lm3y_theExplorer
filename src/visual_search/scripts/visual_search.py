@@ -45,7 +45,11 @@ class VisualSearch:
 
             # Decide if target found
             if len(matches) > 25:  # threshold
+<<<<<<< HEAD
+                rospy.loginfo(" Chair FOUND!")
+=======
                 rospy.loginfo(" Object FOUND!")
+>>>>>>> 1513b60a9a86b82248b8dbb652cd04442d15c0ad
             else:
                 rospy.loginfo("Searching...")
 
